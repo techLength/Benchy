@@ -71,6 +71,7 @@ double run_test_5() {
     // Create threads
     for (int i = 0; i < numThreads; ++i) {
         threads[i] = CreateThread(NULL, 0, addArraysThread, (LPVOID)arrays, 0, &threadIds[i]);
+        SetThreadPriority(threads[i], THREAD_PRIORITY_TIME_CRITICAL);
     }
 
     // Wait for threads to finish

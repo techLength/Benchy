@@ -67,7 +67,7 @@ double run_test_2() {
             execution_times[i] = 0.0;
             threads[i] = CreateThread(NULL, 0, thread_function2, &execution_times[i], 0, NULL);
             // Set thread priority to normal
-            SetThreadPriority(threads[i], THREAD_PRIORITY_NORMAL);
+            SetThreadPriority(threads[i], THREAD_PRIORITY_TIME_CRITICAL);
         }
 
         // Wait for all threads to finish

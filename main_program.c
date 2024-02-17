@@ -20,6 +20,7 @@
 #define IDC_RESULT_TEXT_4 15
 #define IDC_RESULT_TEXT_5 16
 #define IDC_RESULT_TEXT_S 17
+#define ID_EDIT 18
 
 HWND hBackground;
 HWND hResultText1;
@@ -82,11 +83,26 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                                        0, 0, 800, 583, hwnd, (HMENU)IDC_BACKGROUND,
                                        GetModuleHandle(NULL), NULL);
             SendMessage(hBackground, STM_SETIMAGE, IMAGE_BITMAP,
-                        (LPARAM)LoadImage(NULL, "background.bmp", IMAGE_BITMAP, 0, 0,
+                        (LPARAM)LoadImage(NULL, "resources\\background.bmp", IMAGE_BITMAP, 0, 0,
                                           LR_LOADFROMFILE | LR_CREATEDIBSECTION));
 
-            CreateWindow("STATIC", "Version: 0.1.0", WS_CHILD | WS_VISIBLE | SS_CENTER,
+            CreateWindow("STATIC", "Version: 1.0.1", WS_CHILD | WS_VISIBLE | SS_CENTER,
                   684, 10, 100, 16, hwnd, NULL, NULL, NULL);
+
+            HWND hEdit = CreateWindowEx(
+                0,
+                "EDIT",
+                "Set Username",
+                WS_CHILD | WS_VISIBLE | WS_BORDER | ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL,
+                10,  // X position
+                10,  // Y position
+                200, // Width
+                20, // Height
+                hwnd,
+                (HMENU)ID_EDIT,
+                GetModuleHandle(NULL),
+                NULL
+            );
 
             // Create a static text control for displaying the result of test 1
             hResultText1 = CreateWindow("STATIC", "Effective Threads: ", WS_CHILD | WS_VISIBLE,

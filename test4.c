@@ -62,7 +62,7 @@ double run_test_4() {
             return 0.0;
         }
         // Set thread priority to normal
-        SetThreadPriority(threads[i], THREAD_PRIORITY_NORMAL);
+        SetThreadPriority(threads[i], THREAD_PRIORITY_TIME_CRITICAL);
     }
 
     // Wait for all threads to finish

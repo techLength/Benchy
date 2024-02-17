@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#define MEMORY_READ_SIZE 256  // Using 32 bytes
-#define TARGET_READS_PER_THREAD 100000000  // Adjust based on your needs
+#define MEMORY_READ_SIZE 1024 * 1024 * 1024  // Using 32 bytes
+#define TARGET_READS_PER_THREAD 1024 * 1024 * 64  // Adjust based on your needs
 
 // Function to read memory
 DWORD WINAPI read_memory_thread(LPVOID lpParam) {
@@ -77,7 +77,7 @@ double run_test_3_avx2() {
             return 0.0;
         }
         // Set thread priority to normal
-        SetThreadPriority(threads[i], THREAD_PRIORITY_NORMAL);
+        SetThreadPriority(threads[i], THREAD_PRIORITY_TIME_CRITICAL);
     }
 
     // Wait for all threads to finish
