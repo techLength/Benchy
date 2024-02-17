@@ -16,10 +16,14 @@
 #define IDC_OPEN_GPUZ 9
 #define IDC_OPEN_HWINFO 12
 #define IDC_OPEN_UPDATE 13
+#define IDC_RESULT_TEXT_3 14
+#define IDC_RESULT_TEXT_4 15
 
 HWND hBackground;
 HWND hResultText1;
 HWND hResultText2;
+HWND hResultText3;
+HWND hResultText4;
 HWND cpuInfo;
 HWND gpuInfo;
 HWND moboInfo;
@@ -27,9 +31,15 @@ HWND osInfo;
 HWND timeInfo;
 
 // Function to update the text in the result box
-void updateResultText(HWND hResultText, const char *prefix, int result) {
+void updateResultText(HWND hResultText, const char *prefix, double result) {
     char message[50];
-    snprintf(message, sizeof(message), "%s%d", prefix, result);
+    snprintf(message, sizeof(message), "%s%.2f", prefix, result);
+    SetWindowText(hResultText, message);
+}
+
+void updateText(HWND hResultText, const char *prefix) {
+    char message[50];
+    snprintf(message, sizeof(message), "%s", prefix);
     SetWindowText(hResultText, message);
 }
 
@@ -71,17 +81,27 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                         (LPARAM)LoadImage(NULL, "background.bmp", IMAGE_BITMAP, 0, 0,
                                           LR_LOADFROMFILE | LR_CREATEDIBSECTION));
 
-            CreateWindow("STATIC", "Version: 0.0.1", WS_CHILD | WS_VISIBLE | SS_CENTER,
+            CreateWindow("STATIC", "Version: 0.0.4", WS_CHILD | WS_VISIBLE | SS_CENTER,
                   684, 10, 100, 16, hwnd, NULL, NULL, NULL);
 
             // Create a static text control for displaying the result of test 1
-            hResultText1 = CreateWindow("STATIC", "Test 1 Result: ", WS_CHILD | WS_VISIBLE,
+            hResultText1 = CreateWindow("STATIC", "Effective Threads: ", WS_CHILD | WS_VISIBLE,
                                         10, 80, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_1,
                                         NULL, NULL);
 
             // Create a static text control for displaying the result of test 2
-            hResultText2 = CreateWindow("STATIC", "Test 2 Result: ", WS_CHILD | WS_VISIBLE,
+            hResultText2 = CreateWindow("STATIC", "Performance Deviation: ", WS_CHILD | WS_VISIBLE,
                                         10, 110, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_2,
+                                        NULL, NULL);
+
+                                        // Create a static text control for displaying the result of test 3
+            hResultText3 = CreateWindow("STATIC", "Multithreaded Points: ", WS_CHILD | WS_VISIBLE,
+                                        10, 140, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_3,
+                                        NULL, NULL);
+
+                          // Create a static text control for displaying the result of test 4
+            hResultText4 = CreateWindow("STATIC", "Single Thread Points: ", WS_CHILD | WS_VISIBLE,
+                                        10, 170, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_4,
                                         NULL, NULL);
 
             // Create a static text control for displaying CPU information
@@ -165,12 +185,34 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
             switch (LOWORD(w_param)) {
                 case IDC_BUTTON_RUN_TEST:
                     // Call the first test function
-                    int result1 = run_test_1();
-                    updateResultText(hResultText1, "Custom Prefix for Test 1: ", result1);
+                    updateText(hResultText1, "Effective Threads: Testing");
+                    double result1 = run_test_1();
+                    updateResultText(hResultText1, "Effective Threads: ", result1);
+
+                    
+
+
+                    Sleep(100);
 
                     // Call the second test function
-                    int result2 = run_test_2();
-                    updateResultText(hResultText2, "Custom Prefix for Test 2: ", result2);
+                    updateText(hResultText2, "Performance Deviation: Testing");
+                    double result2 = run_test_2();
+                    updateResultText(hResultText2, "Performance Deviation: ", result2);
+
+
+                    Sleep(100);
+
+
+                    updateText(hResultText3, "Multithread Points: Testing");
+                    double result3 = run_test_3_avx2();
+                    updateResultText(hResultText3, "Multithreaded Points: ", result3);
+
+                    Sleep(100);
+
+                    updateText(hResultText4, "Single Thread Points: Testing");
+                    double result4 = run_test_4();
+                    updateResultText(hResultText4, "Single Thread Points: ", result4);
+
                     break;
                 case IDC_OPEN_CPUZ:
                     // Open CPU-Z
@@ -186,7 +228,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                     break;
                 case IDC_OPEN_UPDATE:
                     // Open CPU-Z on the memory tab
-                    openURL("https://github.com/techLength/Benchy/releases/tag/Production");
+                    openURL("https://github.com/techLength/Benchy/releases");
                     break;
             }
             // Add more cases for additional tests if needed
