@@ -18,12 +18,16 @@
 #define IDC_OPEN_UPDATE 13
 #define IDC_RESULT_TEXT_3 14
 #define IDC_RESULT_TEXT_4 15
+#define IDC_RESULT_TEXT_5 16
+#define IDC_RESULT_TEXT_S 17
 
 HWND hBackground;
 HWND hResultText1;
 HWND hResultText2;
 HWND hResultText3;
 HWND hResultText4;
+HWND hResultText5;
+HWND hResultTextS;
 HWND cpuInfo;
 HWND gpuInfo;
 HWND moboInfo;
@@ -81,7 +85,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                         (LPARAM)LoadImage(NULL, "background.bmp", IMAGE_BITMAP, 0, 0,
                                           LR_LOADFROMFILE | LR_CREATEDIBSECTION));
 
-            CreateWindow("STATIC", "Version: 0.0.4", WS_CHILD | WS_VISIBLE | SS_CENTER,
+            CreateWindow("STATIC", "Version: 0.1.0", WS_CHILD | WS_VISIBLE | SS_CENTER,
                   684, 10, 100, 16, hwnd, NULL, NULL, NULL);
 
             // Create a static text control for displaying the result of test 1
@@ -102,6 +106,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                           // Create a static text control for displaying the result of test 4
             hResultText4 = CreateWindow("STATIC", "Single Thread Points: ", WS_CHILD | WS_VISIBLE,
                                         10, 170, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_4,
+                                        NULL, NULL);
+
+                                        // Create a static text control for displaying the result of test 4
+            hResultText5 = CreateWindow("STATIC", "Array Points: ", WS_CHILD | WS_VISIBLE,
+                                        10, 200, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_5,
+                                        NULL, NULL);
+
+                                        // Create a static text control for displaying the result of test 4
+            hResultTextS = CreateWindow("STATIC", "Score: ", WS_CHILD | WS_VISIBLE,
+                                        10, 260, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_S,
                                         NULL, NULL);
 
             // Create a static text control for displaying CPU information
@@ -212,6 +226,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                     updateText(hResultText4, "Single Thread Points: Testing");
                     double result4 = run_test_4();
                     updateResultText(hResultText4, "Single Thread Points: ", result4);
+
+                    updateText(hResultText5, "Array Points: Testing");
+                    double result5 = run_test_5();
+                    updateResultText(hResultText5, "Array Points: ", result5);
+
+                    updateText(hResultTextS, "Score: Testing");
+                    double finalScore = result5 + result4 + result3 - result2 - result1;
+                    updateResultText(hResultTextS, "Score: ", finalScore);
 
                     break;
                 case IDC_OPEN_CPUZ:
