@@ -74,6 +74,43 @@ void openGpuz(const char* parameters) {
     ShellExecute(NULL, "open", gpuzPath, parameters, NULL, SW_SHOWNORMAL);
 }
 
+void ReadUsernameFromRegistry(char* buffer, DWORD bufferSize) {
+    HKEY hKey;
+    DWORD dataSize = bufferSize;
+
+    // Open or create the registry key
+    if (RegCreateKeyEx(HKEY_CURRENT_USER, "SOFTWARE\\techLength\\Benchy", 0, NULL, 0, KEY_QUERY_VALUE | KEY_SET_VALUE, NULL, &hKey, NULL) == ERROR_SUCCESS) {
+        // Read the username value
+        if (RegQueryValueEx(hKey, "Username", NULL, NULL, (BYTE*)buffer, &dataSize) != ERROR_SUCCESS) {
+            // Set a default value if the key is not found or any error occurs
+            strcpy_s(buffer, bufferSize, "DefaultUsername");
+
+            // Write the default value to the registry
+            RegSetValueEx(hKey, "Username", 0, REG_SZ, (BYTE*)buffer, (DWORD)strlen(buffer) + 1);
+        }
+
+        // Close the registry key
+        RegCloseKey(hKey);
+    } else {
+        // Default value if the key cannot be opened or created
+        strcpy_s(buffer, bufferSize, "DefaultUsername");
+    }
+}
+
+void WriteUsernameToRegistry(const char* username) {
+    HKEY hKey;
+    // Open or create the registry key
+    if (RegCreateKeyEx(HKEY_CURRENT_USER, "SOFTWARE\\techLength\\Benchy", 0, NULL, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, NULL, &hKey, NULL) == ERROR_SUCCESS) {
+        // Write the username value
+        RegSetValueEx(hKey, "Username", 0, REG_SZ, (BYTE*)username, strlen(username) + 1);
+
+        // Close the registry key
+        RegCloseKey(hKey);
+    } else {
+        MessageBox(NULL, "Failed to write to the registry!", "Error", MB_ICONERROR | MB_OK);
+    }
+}
+
 // Callback function for the button click event
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param) {
     switch (message) {
@@ -86,13 +123,17 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                         (LPARAM)LoadImage(NULL, "resources\\background.bmp", IMAGE_BITMAP, 0, 0,
                                           LR_LOADFROMFILE | LR_CREATEDIBSECTION));
 
-            CreateWindow("STATIC", "Version: 1.0.1", WS_CHILD | WS_VISIBLE | SS_CENTER,
+            CreateWindow("STATIC", "Version: 1.0.4", WS_CHILD | WS_VISIBLE | SS_CENTER,
                   684, 10, 100, 16, hwnd, NULL, NULL, NULL);
+
+
+            char usernameBuffer[256];
+            ReadUsernameFromRegistry(usernameBuffer, sizeof(usernameBuffer));
 
             HWND hEdit = CreateWindowEx(
                 0,
                 "EDIT",
-                "Set Username",
+                usernameBuffer,
                 WS_CHILD | WS_VISIBLE | WS_BORDER | ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL,
                 10,  // X position
                 10,  // Y position
@@ -216,38 +257,47 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                 case IDC_BUTTON_RUN_TEST:
                     // Call the first test function
                     updateText(hResultText1, "Effective Threads: Testing");
+                                        Sleep(500);
+
                     double result1 = run_test_1();
                     updateResultText(hResultText1, "Effective Threads: ", result1);
 
                     
 
 
-                    Sleep(100);
 
                     // Call the second test function
                     updateText(hResultText2, "Performance Deviation: Testing");
+                                        Sleep(500);
+
                     double result2 = run_test_2();
                     updateResultText(hResultText2, "Performance Deviation: ", result2);
 
 
-                    Sleep(100);
 
 
                     updateText(hResultText3, "Multithread Points: Testing");
+                                        Sleep(500);
+
                     double result3 = run_test_3_avx2();
                     updateResultText(hResultText3, "Multithreaded Points: ", result3);
 
-                    Sleep(100);
 
                     updateText(hResultText4, "Single Thread Points: Testing");
+                                        Sleep(500);
+
                     double result4 = run_test_4();
                     updateResultText(hResultText4, "Single Thread Points: ", result4);
 
                     updateText(hResultText5, "Array Points: Testing");
+                                        Sleep(500);
+
                     double result5 = run_test_5();
                     updateResultText(hResultText5, "Array Points: ", result5);
 
                     updateText(hResultTextS, "Score: Testing");
+                                        Sleep(500);
+
                     double finalScore = result5 + result4 + result3 - result2 - result1;
                     updateResultText(hResultTextS, "Score: ", finalScore);
 
@@ -268,6 +318,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                     // Open CPU-Z on the memory tab
                     openURL("https://github.com/techLength/Benchy/releases");
                     break;
+            }
+
+            if (LOWORD(w_param) == ID_EDIT && HIWORD(w_param) == EN_CHANGE) {
+                // Edit control content has changed
+                char usernameBuffer[256];
+                GetWindowText(GetDlgItem(hwnd, ID_EDIT), usernameBuffer, sizeof(usernameBuffer));
+
+                // Write the updated username to the registry
+                WriteUsernameToRegistry(usernameBuffer);
             }
             // Add more cases for additional tests if needed
             break;
