@@ -78,7 +78,7 @@ double ram_test_3() {
     free(memoryBlock);
 
     // Calculate elapsed time in milliseconds
-    double elapsedTime = ((double)(endTime.QuadPart - startTime.QuadPart) / frequency.QuadPart);
+    double elapsedTime = ((double)(endTime.QuadPart - startTime.QuadPart) / frequency.QuadPart) * 1000;
 
     return 10 / elapsedTime;
 }

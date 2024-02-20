@@ -139,7 +139,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                         (LPARAM)LoadImage(NULL, "resources\\background.bmp", IMAGE_BITMAP, 0, 0,
                                           LR_LOADFROMFILE | LR_CREATEDIBSECTION));
 
-            CreateWindow("STATIC", "Version: 1.1.3", WS_CHILD | WS_VISIBLE | SS_CENTER,
+            CreateWindow("STATIC", "Version: 1.2.0", WS_CHILD | WS_VISIBLE | SS_CENTER,
                   684, 10, 100, 16, hwnd, NULL, NULL, NULL);
 
 
@@ -306,7 +306,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                     updateText(hResultText1, "Effective Threads: Testing");
                                         Sleep(500);
 
-                    double cpuresult1 = run_test_1();
+                    double cpuresult1 = cpustress();
                     updateResultText(hResultText1, "Effective Threads: ", cpuresult1);
                     Sleep(500);
 

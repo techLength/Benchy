@@ -81,7 +81,7 @@ double run_test_5() {
     QueryPerformanceCounter(&endTime);
 
     // Calculate elapsed time
-    double elapsedSeconds = (double)(endTime.QuadPart - startTime.QuadPart) / frequency.QuadPart;
+    double elapsedSeconds = (double)(endTime.QuadPart - startTime.QuadPart) / frequency.QuadPart * 1000;
 
     // Print the elapsed time
     printf("Elapsed Time: %.2f seconds\n", 100 / elapsedSeconds);
@@ -94,5 +94,5 @@ double run_test_5() {
     free(threads);
     free(threadIds);
 
-    return (double)100 / elapsedSeconds;
+    return (double)10 / elapsedSeconds;
 }

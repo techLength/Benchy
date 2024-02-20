@@ -86,8 +86,8 @@ double run_test_3_avx2() {
     QueryPerformanceCounter(&end_time);  // Record end time
 
     // Calculate the total time taken by each thread
-    double elapsed_time = (double)(end_time.QuadPart - start_time.QuadPart) / frequency.QuadPart;
-    double inverse_time = 10 * num_threads / elapsed_time;
+    double elapsed_time = (double)(end_time.QuadPart - start_time.QuadPart) / frequency.QuadPart * 1000;
+    double inverse_time = num_threads / elapsed_time;
 
     // Free allocated memory
     for (DWORD i = 0; i < num_threads; ++i) {

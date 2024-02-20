@@ -1,3 +1,2 @@
-gcc main_program.c test1.c test2.c test3.c test4.c test5.c ramtest1.c ramtest2.c ramtest3.c ramtest4.c ramtest5.c ramtest6.c gethardware.c -o Benchy -mwindows
-
-gcc example.c -o example
+gcc main_program.c test1.c test2.c test3.c test4.c test5.c ramtest1.c ramtest2.c ramtest3.c ramtest4.c ramtest5.c ramtest6.c gethardware.c -o Benchy -mwindows -mavx2 -O3 -fno-strict-aliasing -fno-stack-protector
+gcc -o example example.c -mavx2 -O3 -fno-strict-aliasing -fno-stack-protector

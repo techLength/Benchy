@@ -2,7 +2,6 @@
 #ifndef TEST_FUNCTIONS_H
 #define TEST_FUNCTIONS_H
 
-double run_test_1();
 double run_test_2();
 char* get_cpu_model_name();
 char* get_gpu_name();
@@ -18,6 +17,7 @@ double ram_test_3();
 double ram_test_4();
 double ram_test_5();
 double ram_test_6();
+double cpustress();
 // Add more common declarations as needed
 
 #endif  // TEST_FUNCTIONS_H
