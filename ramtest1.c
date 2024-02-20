@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_ITERATIONS 6400
+#define MAX_ITERATIONS 128002
 
 double ram_test_1() {
     double maxRamInGB = 0.0;
