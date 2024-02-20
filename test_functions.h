@@ -12,6 +12,12 @@ char* get_time();
 double run_test_3_avx2();
 double run_test_4();
 double run_test_5();
+double ram_test_1();
+double ram_test_2();
+double ram_test_3();
+double ram_test_4();
+double ram_test_5();
+double ram_test_6();
 // Add more common declarations as needed
 
 #endif  // TEST_FUNCTIONS_H

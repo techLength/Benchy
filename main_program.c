@@ -20,7 +20,15 @@
 #define IDC_RESULT_TEXT_4 15
 #define IDC_RESULT_TEXT_5 16
 #define IDC_RESULT_TEXT_S 17
+#define IDC_RESULT_MEM_S 18
+#define IDC_RESULT_MEM_6 19
+#define IDC_RESULT_MEM_1 20
+#define IDC_RESULT_MEM_2 21
+#define IDC_RESULT_MEM_3 22
+#define IDC_RESULT_MEM_4 23
+#define IDC_RESULT_MEM_5 24
 #define ID_EDIT 18
+#define IDC_RESULT_TOTAL 25
 
 HWND hBackground;
 HWND hResultText1;
@@ -29,11 +37,19 @@ HWND hResultText3;
 HWND hResultText4;
 HWND hResultText5;
 HWND hResultTextS;
+HWND hResultMem1;
+HWND hResultMem2;
+HWND hResultMem3;
+HWND hResultMem4;
+HWND hResultMem5;
+HWND hResultMem6;
+HWND hResultMemS;
 HWND cpuInfo;
 HWND gpuInfo;
 HWND moboInfo;
 HWND osInfo;
 HWND timeInfo;
+HWND hResultTotal;
 
 // Function to update the text in the result box
 void updateResultText(HWND hResultText, const char *prefix, double result) {
@@ -123,7 +139,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                         (LPARAM)LoadImage(NULL, "resources\\background.bmp", IMAGE_BITMAP, 0, 0,
                                           LR_LOADFROMFILE | LR_CREATEDIBSECTION));
 
-            CreateWindow("STATIC", "Version: 1.0.4", WS_CHILD | WS_VISIBLE | SS_CENTER,
+            CreateWindow("STATIC", "Version: 1.1.2", WS_CHILD | WS_VISIBLE | SS_CENTER,
                   684, 10, 100, 16, hwnd, NULL, NULL, NULL);
 
 
@@ -147,33 +163,64 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
 
             // Create a static text control for displaying the result of test 1
             hResultText1 = CreateWindow("STATIC", "Effective Threads: ", WS_CHILD | WS_VISIBLE,
-                                        10, 80, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_1,
+                                        10, 80, 252, 20, hwnd, (HMENU)IDC_RESULT_TEXT_1,
                                         NULL, NULL);
 
             // Create a static text control for displaying the result of test 2
             hResultText2 = CreateWindow("STATIC", "Performance Deviation: ", WS_CHILD | WS_VISIBLE,
-                                        10, 110, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_2,
+                                        10, 110, 252, 20, hwnd, (HMENU)IDC_RESULT_TEXT_2,
                                         NULL, NULL);
 
                                         // Create a static text control for displaying the result of test 3
             hResultText3 = CreateWindow("STATIC", "Multithreaded Points: ", WS_CHILD | WS_VISIBLE,
-                                        10, 140, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_3,
+                                        10, 140, 252, 20, hwnd, (HMENU)IDC_RESULT_TEXT_3,
                                         NULL, NULL);
 
                           // Create a static text control for displaying the result of test 4
             hResultText4 = CreateWindow("STATIC", "Single Thread Points: ", WS_CHILD | WS_VISIBLE,
-                                        10, 170, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_4,
+                                        10, 170, 252, 20, hwnd, (HMENU)IDC_RESULT_TEXT_4,
                                         NULL, NULL);
 
                                         // Create a static text control for displaying the result of test 4
             hResultText5 = CreateWindow("STATIC", "Array Points: ", WS_CHILD | WS_VISIBLE,
-                                        10, 200, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_5,
+                                        10, 200, 252, 20, hwnd, (HMENU)IDC_RESULT_TEXT_5,
                                         NULL, NULL);
 
                                         // Create a static text control for displaying the result of test 4
-            hResultTextS = CreateWindow("STATIC", "Score: ", WS_CHILD | WS_VISIBLE,
-                                        10, 260, 300, 20, hwnd, (HMENU)IDC_RESULT_TEXT_S,
+            hResultTextS = CreateWindow("STATIC", "CPU Score: ", WS_CHILD | WS_VISIBLE,
+                                        10, 260, 252, 20, hwnd, (HMENU)IDC_RESULT_TEXT_S,
                                         NULL, NULL);
+
+
+
+
+            hResultMem1 = CreateWindow("STATIC", "Effective Memory: ", WS_CHILD | WS_VISIBLE,
+                                        270, 80, 253, 20, hwnd, (HMENU)IDC_RESULT_MEM_1,
+                                        NULL, NULL);
+            hResultMem2 = CreateWindow("STATIC", "Cache Points: ", WS_CHILD | WS_VISIBLE,
+                                        270, 110, 253, 20, hwnd, (HMENU)IDC_RESULT_MEM_2,
+                                        NULL, NULL);
+            hResultMem3 = CreateWindow("STATIC", "Read Points: ", WS_CHILD | WS_VISIBLE,
+                                        270, 140, 253, 20, hwnd, (HMENU)IDC_RESULT_MEM_3,
+                                        NULL, NULL);
+            hResultMem4 = CreateWindow("STATIC", "Write Points: ", WS_CHILD | WS_VISIBLE,
+                                        270, 170, 253, 20, hwnd, (HMENU)IDC_RESULT_MEM_4,
+                                        NULL, NULL);
+            hResultMem5 = CreateWindow("STATIC", "Copy Points: ", WS_CHILD | WS_VISIBLE,
+                                        270, 200, 253, 20, hwnd, (HMENU)IDC_RESULT_MEM_5,
+                                        NULL, NULL);
+            hResultMem6 = CreateWindow("STATIC", "Latency: ", WS_CHILD | WS_VISIBLE,
+                                        270, 230, 253, 20, hwnd, (HMENU)IDC_RESULT_MEM_6,
+                                        NULL, NULL);
+            hResultMemS = CreateWindow("STATIC", "Memory Score: ", WS_CHILD | WS_VISIBLE,
+                                        270, 290, 253, 20, hwnd, (HMENU)IDC_RESULT_MEM_S,
+                                        NULL, NULL);
+
+
+            hResultTotal = CreateWindow("STATIC", "Total Score: ", WS_CHILD | WS_VISIBLE,
+                                        574, 353, 210, 20, hwnd, (HMENU)IDC_RESULT_TOTAL,
+                                        NULL, NULL);
+            
 
             // Create a static text control for displaying CPU information
             cpuInfo = CreateWindow("STATIC", "", WS_CHILD | WS_VISIBLE,
@@ -259,8 +306,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                     updateText(hResultText1, "Effective Threads: Testing");
                                         Sleep(500);
 
-                    double result1 = run_test_1();
-                    updateResultText(hResultText1, "Effective Threads: ", result1);
+                    double cpuresult1 = run_test_1();
+                    updateResultText(hResultText1, "Effective Threads: ", cpuresult1);
+                    Sleep(500);
 
                     
 
@@ -270,8 +318,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                     updateText(hResultText2, "Performance Deviation: Testing");
                                         Sleep(500);
 
-                    double result2 = run_test_2();
-                    updateResultText(hResultText2, "Performance Deviation: ", result2);
+                    double cpuresult2 = run_test_2();
+                    updateResultText(hResultText2, "Performance Deviation: ", cpuresult2);
 
 
 
@@ -279,27 +327,71 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param
                     updateText(hResultText3, "Multithread Points: Testing");
                                         Sleep(500);
 
-                    double result3 = run_test_3_avx2();
-                    updateResultText(hResultText3, "Multithreaded Points: ", result3);
+                    double cpuresult3 = run_test_3_avx2();
+                    updateResultText(hResultText3, "Multithreaded Points: ", cpuresult3);
 
 
                     updateText(hResultText4, "Single Thread Points: Testing");
                                         Sleep(500);
 
-                    double result4 = run_test_4();
-                    updateResultText(hResultText4, "Single Thread Points: ", result4);
+                    double cpuresult4 = run_test_4();
+                    updateResultText(hResultText4, "Single Thread Points: ", cpuresult4);
 
                     updateText(hResultText5, "Array Points: Testing");
                                         Sleep(500);
 
-                    double result5 = run_test_5();
-                    updateResultText(hResultText5, "Array Points: ", result5);
+                    double cpuresult5 = run_test_5();
+                    updateResultText(hResultText5, "Array Points: ", cpuresult5);
 
-                    updateText(hResultTextS, "Score: Testing");
+                    updateText(hResultTextS, "CPU Score: Testing");
                                         Sleep(500);
 
-                    double finalScore = result5 + result4 + result3 - result2 - result1;
-                    updateResultText(hResultTextS, "Score: ", finalScore);
+                    double cpuScore = cpuresult5 + cpuresult4 + cpuresult3 - cpuresult2 - cpuresult1;
+                    updateResultText(hResultTextS, "CPU Score: ", cpuScore);
+
+
+
+
+Sleep(500);
+                    updateText(hResultMem1, "Effective Memory: Testing");
+                    Sleep(500);
+                    double memResult1 = ram_test_1();
+                    updateResultText(hResultMem1, "Effective Memory: ", memResult1);
+
+                    updateText(hResultMem2, "Cache Points: Testing");
+                    Sleep(500);
+                    double memResult2 = ram_test_2();
+                    updateResultText(hResultMem2, "Cache Points: ", memResult2);
+
+                    updateText(hResultMem3, "Read Points: Testing");
+                    Sleep(500);
+                    double memResult3 = ram_test_3();
+                    updateResultText(hResultMem3, "Read Points: ", memResult3);
+
+                    updateText(hResultMem4, "Write Points: Testing");
+                    Sleep(500);
+                    double memResult4 = ram_test_4();
+                    updateResultText(hResultMem4, "Write Points: ", memResult4);
+
+                    updateText(hResultMem5, "Copy Points: Testing");
+                    Sleep(500);
+                    double memResult5 = ram_test_5();
+                    updateResultText(hResultMem5, "Copy Points: ", memResult5);
+
+                    updateText(hResultMem6, "Latency: Testing");
+                    Sleep(500);
+                    double memResult6 = ram_test_6();
+                    updateResultText(hResultMem6, "Latency: ", memResult6);
+
+                   updateText(hResultMemS, "Memory Points: Testing");
+                  Sleep(500);
+                    double memScore = memResult1 + memResult2 + memResult3 + memResult4 + memResult5 - memResult6;
+                  updateResultText(hResultMemS, "Memory Score: ", memScore);
+
+                    updateText(hResultTotal, "Total Points: Testing");
+                    Sleep(500);
+                    double totalScore = cpuScore + memScore;
+                    updateResultText(hResultTotal, "Total Score: ", totalScore);
 
                     break;
                 case IDC_OPEN_CPUZ:
