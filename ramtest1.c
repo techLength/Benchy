@@ -1,32 +1,16 @@
 #include <stdio.h>
-#include <stdlib.h>
-
-#define MAX_ITERATIONS 128002
+#include <Windows.h>
 
 double ram_test_1() {
-    double maxRamInGB = 0.0;
-    void* memoryBlock = NULL;
-    size_t baseSize = 10 * 1024 * 1024;
+    MEMORYSTATUSEX memoryStatus;
+    memoryStatus.dwLength = sizeof(memoryStatus);
 
-    for (int i = 0; i < MAX_ITERATIONS; ++i) {
-        size_t blockSize = baseSize + i * baseSize; // Increase block size incrementally
-
-        // Attempt to allocate memory
-        memoryBlock = malloc(blockSize);
-
-        if (memoryBlock != NULL) {
-            // Allocation successful, update maxRamInMB
-            maxRamInGB = i;
-        } else {
-            // Allocation failed, break out of the loop
-            break;
-        }
-
-        free(memoryBlock);
+    if (GlobalMemoryStatusEx(&memoryStatus)) {
+        // Get the amount of available physical memory in gigabytes
+        double availablePhysicalMemoryGB = (double)memoryStatus.ullAvailPhys / (1024 * 1024 * 1024);
+        return availablePhysicalMemoryGB;
+    } else {
+        printf("Failed to retrieve memory status. Error code: %lu\n", GetLastError());
+        return -1.0; // Return a negative value to indicate an error
     }
-
-    // Free the last allocated memory block before returning
-    free(memoryBlock);
-
-    return maxRamInGB / 100.0;
 }
