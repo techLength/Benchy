@@ -1,3 +1,3 @@
 hahahaha lagga
 
-![image](https://github.com/techLength/Benchy/assets/149573417/7328c698-0874-4f8b-9dd7-bc414f8ada1e)
+![image](https://github.com/techLength/Benchy/assets/149573417/ba6e70bf-963d-4387-aaa9-101eef70b57c)
