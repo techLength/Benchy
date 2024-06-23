@@ -49,6 +49,8 @@ double ram_test_6() {
     // Create threads to allocate and free memory
     for (int i = 0; i < numThreads; ++i) {
         threads[i] = CreateThread(NULL, 0, ram_test_6_thread, &threadData[i], 0, NULL);
+
+        SetThreadPriority(threads[i], THREAD_PRIORITY_TIME_CRITICAL);
     }
 
     // Wait for threads to finish

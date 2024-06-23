@@ -65,6 +65,8 @@ double ram_test_3() {
     // Create threads to read from memory
     for (int i = 0; i < numThreads; ++i) {
         threads[i] = CreateThread(NULL, 0, ram_test_3_thread, &threadData[i], 0, NULL);
+
+        SetThreadPriority(threads[i], THREAD_PRIORITY_TIME_CRITICAL);
     }
 
     // Wait for threads to finish

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define NUM_RUNS 100
+#define NUM_RUNS 1000
 #define MEMORY_SIZE (1024 * 1024)
 
 typedef struct {
@@ -59,6 +59,8 @@ double ram_test_2() {
         for (int i = 0; i < numThreads; ++i) {
             threadData[i].memory = (char*)malloc(MEMORY_SIZE);
             threads[i] = CreateThread(NULL, 0, ram_test_2_thread, &threadData[i], 0, NULL);
+
+            SetThreadPriority(threads[i], THREAD_PRIORITY_TIME_CRITICAL);
         }
 
         WaitForMultipleObjects(numThreads, threads, TRUE, INFINITE);
