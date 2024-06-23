@@ -78,7 +78,7 @@ double individual_test(int* restrict array, int numThreads) {
         }
 
         // Set thread priority to normal
-        SetThreadPriority(threads[i], THREAD_PRIORITY_TIME_CRITICAL);
+        SetThreadPriority(threads[i], THREAD_PRIORITY_HIGHEST);
 
         // Disable frequency scaling (example for Windows)
         SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_AWAYMODE_REQUIRED);

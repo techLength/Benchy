@@ -66,7 +66,7 @@ double ram_test_3() {
     for (int i = 0; i < numThreads; ++i) {
         threads[i] = CreateThread(NULL, 0, ram_test_3_thread, &threadData[i], 0, NULL);
 
-        SetThreadPriority(threads[i], THREAD_PRIORITY_TIME_CRITICAL);
+        SetThreadPriority(threads[i], THREAD_PRIORITY_HIGHEST);
     }
 
     // Wait for threads to finish

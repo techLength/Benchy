@@ -18,7 +18,7 @@ DWORD WINAPI count_up_thread(LPVOID lpParam) {
     unsigned long long* total_count = (unsigned long long*)lpParam;
 
     ULONGLONG start_time = GetTickCount64();
-    while (GetTickCount64() - start_time < 1000) {
+    while (GetTickCount64() - start_time < 4000) {
         (*total_count)++;
     }
 
@@ -62,7 +62,7 @@ double run_test_4() {
             return 0.0;
         }
         // Set thread priority to normal
-        SetThreadPriority(threads[i], THREAD_PRIORITY_TIME_CRITICAL);
+        SetThreadPriority(threads[i], THREAD_PRIORITY_HIGHEST);
     }
 
     // Wait for all threads to finish
@@ -80,6 +80,6 @@ double run_test_4() {
     free(total_counts);
 
     // Divide the output by the total thread count and the CPU frequency
-    double cpu_frequency = get_cpu_frequency();
+    double cpu_frequency = 4 * get_cpu_frequency();
     return (double)total_count / (num_threads * cpu_frequency);
 }
